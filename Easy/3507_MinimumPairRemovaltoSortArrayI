@@ -1,0 +1,31 @@
+class Solution {
+    boolean isSorted(int[] arr) {
+        for(int i=0;i<arr.length-1;i++) {
+            if(arr[i]>arr[i+1]) return false;
+        }
+        return true;
+    }
+    public int minimumPairRemoval(int[] nums) {
+        int ans=0,n=nums.length;
+        int[] arr=new int[n];
+        System.arraycopy(nums,0,arr,0,n);
+        while(!isSorted(arr)) {
+            ans++;
+            int min=Integer.MAX_VALUE,ind=-1;
+            for(int i=0;i<arr.length-1;i++) {
+                if(arr[i]+arr[i+1]<min){
+                    min=arr[i]+arr[i+1];
+                    ind=i;
+                }
+            }
+            int[] new_arr=new int[arr.length-1];
+            for(int i=0;i<arr.length-1;i++) {
+                if(i<ind) new_arr[i]=arr[i];
+                else if(i==ind) new_arr[i]=arr[i]+arr[i+1];
+                else new_arr[i]=arr[i+1];
+            }
+            arr=new_arr;
+        }
+        return ans;
+    }
+}
