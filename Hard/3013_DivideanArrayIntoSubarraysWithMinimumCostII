@@ -1,0 +1,74 @@
+class Solution {
+    public long minimumCost(int[] nums, int k, int dist) {
+        int n = nums.length;
+        int m = k - 1;
+        long ans = Long.MAX_VALUE;
+
+        TreeMap<Integer, Integer> small = new TreeMap<>();
+        TreeMap<Integer, Integer> large = new TreeMap<>();
+        long[] sumSmall = new long[]{0};
+        int[] sizeSmall = new int[]{0};
+
+        int left = 1;
+        int right = Math.min(1 + dist, n - 1);
+        for (int i = left; i <= right; i++) {
+            add(nums[i], small, large, sumSmall, sizeSmall, m);
+        }
+        if (sizeSmall[0] == m) ans = Math.min(ans, sumSmall[0]);
+
+        for (int s = 2; s < n; s++) {
+            remove(nums[s - 1], small, large, sumSmall, sizeSmall, m);
+            int newRight = s + dist;
+            if (newRight < n) add(nums[newRight], small, large, sumSmall, sizeSmall, m);
+            if (sizeSmall[0] == m) ans = Math.min(ans, sumSmall[0]);
+        }
+
+        return nums[0] + ans;
+    }
+
+    private void add(int x, TreeMap<Integer, Integer> small, TreeMap<Integer, Integer> large,
+                     long[] sumSmall, int[] sizeSmall, int m) {
+        if (sizeSmall[0] < m) {
+            small.put(x, small.getOrDefault(x, 0) + 1);
+            sumSmall[0] += x;
+            sizeSmall[0]++;
+        } else {
+            int maxSmall = small.lastKey();
+            if (x < maxSmall) {
+                removeOne(small, maxSmall);
+                sumSmall[0] -= maxSmall;
+                sizeSmall[0]--;
+                large.put(maxSmall, large.getOrDefault(maxSmall, 0) + 1);
+                small.put(x, small.getOrDefault(x, 0) + 1);
+                sumSmall[0] += x;
+                sizeSmall[0]++;
+            } else {
+                large.put(x, large.getOrDefault(x, 0) + 1);
+            }
+        }
+    }
+
+    private void remove(int x, TreeMap<Integer, Integer> small, TreeMap<Integer, Integer> large,
+                        long[] sumSmall, int[] sizeSmall, int m) {
+        if (small.containsKey(x)) {
+            removeOne(small, x);
+            sumSmall[0] -= x;
+            sizeSmall[0]--;
+            if (!large.isEmpty()) {
+                int minLarge = large.firstKey();
+                removeOne(large, minLarge);
+                small.put(minLarge, small.getOrDefault(minLarge, 0) + 1);
+                sumSmall[0] += minLarge;
+                sizeSmall[0]++;
+            }
+        } else if (large.containsKey(x)) {
+            removeOne(large, x);
+        }
+    }
+
+    private void removeOne(TreeMap<Integer, Integer> map, int key) {
+        int cnt = map.get(key);
+        if (cnt == 1) map.remove(key);
+        else map.put(key, cnt - 1);
+    }
+}
