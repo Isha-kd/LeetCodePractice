@@ -1,0 +1,55 @@
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder ans=new StringBuilder();
+        int x=a.length()-1, y=b.length()-1;
+        boolean flag=false;
+        while(x>=0 && y>=0) {
+            if(a.charAt(x)=='1' && b.charAt(y)=='1') {
+                if(flag) ans.append("1");
+                else{
+                    ans.append("0");
+                    flag=true;
+                }
+            }
+            else if(a.charAt(x)=='1' || b.charAt(y)=='1') {
+                if(flag) ans.append("0");
+                else{
+                    ans.append("1");
+                }
+            }
+            else {
+                if(flag) {
+                    ans.append("1");
+                    flag=false;
+                }
+                else {
+                    ans.append("0");
+                }
+            }
+            x--;
+            y--;
+        }
+        while(x>=0) {
+            if(flag && a.charAt(x)=='1')
+                ans.append("0");
+            else if(flag) {
+                ans.append("1");
+                flag=false;
+            }
+            else ans.append(a.charAt(x));
+            x--;
+        }
+        while(y>=0) {
+            if(flag && b.charAt(y)=='1')
+                ans.append("0");
+            else if(flag) {
+                ans.append("1");
+                flag=false;
+            }
+            else ans.append(b.charAt(y));
+            y--;
+        }
+        if(flag) ans.append("1");
+        return ans.reverse().toString();
+    }
+}
