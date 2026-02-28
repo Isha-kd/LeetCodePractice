@@ -1,0 +1,15 @@
+class Solution {
+    public int concatenatedBinary(int n) {
+        long ans=1;
+        int pow=1,md=(int)1e9+7;
+        for(int i=2;i<=n;i++) {
+            if((i&(i-1))==0) {
+                pow++;
+            }
+            ans<<=pow;
+            ans+=i;
+            ans%=md;
+        }
+        return (int) ans;
+    }
+}
