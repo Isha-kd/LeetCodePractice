@@ -1,0 +1,25 @@
+class Solution {
+    String ans="";
+    int c=0;
+    char[] arr={'a','b','c'};
+    void helper(StringBuilder curr,char prev,int k,int n) {
+        if(curr.length()==n){
+            c++;
+            if(c==k) ans=curr.toString();
+            return;
+        }
+        for(char i:arr) {
+            if(i!=prev) {
+                curr.append(i);
+                helper(curr,i,k,n);
+                curr.deleteCharAt(curr.length()-1);
+            }
+            if(c==k) return;
+        }
+
+    }
+    public String getHappyString(int n, int k) {
+        helper(new StringBuilder(),'.',k,n);
+        return ans;
+    }
+}
