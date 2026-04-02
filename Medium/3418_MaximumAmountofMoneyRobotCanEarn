@@ -1,0 +1,38 @@
+class Solution {
+    int ans = Integer.MIN_VALUE;
+    int[][][] dp;
+    int helper(int[][] coins, int i, int j, int c) {
+        if(i == coins.length-1 && j == coins[0].length-1) {
+            if(c < 2) return Math.max(0,coins[i][j]);
+            return coins[i][j];
+        }
+        if(i >= coins.length || j >= coins[0].length)
+            return Integer.MIN_VALUE;
+        if(dp[i][j][c] != Integer.MIN_VALUE)
+            return dp[i][j][c];
+        long max = Integer.MIN_VALUE;
+        if(coins[i][j] < 0 && c < 2) {
+            long down = helper(coins, i+1, j, c+1);
+            long right = helper(coins, i, j+1, c+1);
+            max = Math.max(down, right);
+            max=Math.max(Integer.MIN_VALUE, max);
+        }
+        long d = 1l*helper(coins, i+1, j, c) + coins[i][j];
+        long r = 1l*helper(coins, i, j+1, c) + coins[i][j];
+        if(c == 2)
+            return dp[i][j][c] =(int)Math.max(Integer.MIN_VALUE,Math.max(d,r));
+        return dp[i][j][c] = (int) Math.max(max,Math.max(d,r));
+
+
+    }
+    public int maximumAmount(int[][] coins) {
+        int m =coins.length, n = coins[0].length;
+        dp = new int[m][n][3];
+        for(int[][] i : dp) {
+            for(int[] j : i) {
+                Arrays.fill(j, Integer.MIN_VALUE);
+            }
+        }
+        return helper(coins, 0, 0, 0);
+    }
+}
