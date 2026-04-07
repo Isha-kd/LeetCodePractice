@@ -1,0 +1,111 @@
+class Robot {
+
+    int[][] dir = {{0,1},{-1,0},{0,-1},{1,0}};
+    String[] face = {"East","North", "West", "South"};
+    int x, y,curr;
+    int[][] arr;
+    int h,w;
+    int peri;
+
+    public Robot(int width, int height) {
+        arr = new int[height][width];
+        x=height-1;
+        y=0;
+        curr = 0;
+        h = height;
+        w=width;
+        peri = 2*height + 2*width-4;
+    }
+
+    int stepN(int num) {
+        if(x>=num) {
+            x -= num;
+            return num;
+        }
+        else {
+            int ans = x;
+            num-=x;
+            x=0;
+            curr++;
+            curr%=4;
+            return ans;
+        }
+    }
+
+    int stepS(int num) {
+        if(h-1-x>=num) {
+            x += num;
+            return num;
+        }
+        else {
+            int ans = h-1-x;
+            num -= h-1-x;
+            x=h-1;
+            curr++;
+            curr%=4;
+            return ans;
+        }
+    }
+
+    int stepE(int num) {
+        if(w-1-y>=num) {
+            y += num;
+            return num;
+        }
+        else {
+            int ans = w-1-y;
+            num -= ans;
+            y=w-1;
+            curr++;
+            curr%=4;
+            return ans;
+        }
+    }
+
+    int stepW(int num) {
+        if(y>=num) {
+            y -= num;
+            return num;
+        }
+        else {
+            int ans = y;
+            num-=y;
+            y=0;
+            curr++;
+            curr%=4;
+            return ans;
+        }
+    }
+
+    public void step(int num) {
+        num%=peri;
+        if(num == 0)
+            num = peri;
+        while(num>0) {
+            if(curr == 0)
+                num -= stepE(num);
+            else if( curr == 1)
+                num -= stepN(num);
+            else if(curr == 2)
+                num -= stepW(num);
+            else
+                num -= stepS(num);
+        }
+    }
+
+    public int[] getPos() {
+        return new int[]{y,h-1-x};
+    }
+
+    public String getDir() {
+        return face[curr];
+    }
+}
+
+/**
+ * Your Robot object will be instantiated and called as such:
+ * Robot obj = new Robot(width, height);
+ * obj.step(num);
+ * int[] param_2 = obj.getPos();
+ * String param_3 = obj.getDir();
+ */
