@@ -1,0 +1,16 @@
+class Solution {
+    public int xorAfterQueries(int[] nums, int[][] queries) {
+        for(int[] i : queries) {
+            int idx = i[0];
+            while(idx <= i[1]) {
+                nums[idx] = (int)((1l * nums[idx] * i[3]) % 1_000_000_007);
+                idx += i[2];
+            }
+        }
+        int ans = 0;
+        for(int i : nums) {
+            ans ^= i;
+        }
+        return ans;
+    }
+}
