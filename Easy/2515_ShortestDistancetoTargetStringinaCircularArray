@@ -1,0 +1,19 @@
+class Solution {
+
+    public int closestTarget(String[] words, String target, int startIndex) {
+
+        int l = startIndex, r = l, c = 0, n = words.length;
+
+        for(;c <= n; ++c) {
+            if(words[l].equals(target) || words[r].equals(target))
+                break;
+            l = (l-1+n)%n;
+            r ++;
+            r %= n;
+        }
+
+        if(c > n)
+            return -1;
+        return c;
+    }
+}
