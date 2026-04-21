@@ -1,0 +1,51 @@
+class Solution {
+    int dfs(int[] source, int[] target, List<List<Integer>> list, boolean[] vis, int curr) {
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(source[curr],1);
+        map.put(target[curr],map.getOrDefault(target[curr],0) - 1);
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(curr);
+        vis[curr] = true;
+        while(!q.isEmpty()) {
+            int n = q.poll();
+            for(int i : list.get(n)) {
+                if(!vis[i]) {
+                    vis[i] = true;
+                    q.offer(i);
+                    map.put(source[i],map.getOrDefault(source[i],0) + 1);
+                    map.put(target[i],map.getOrDefault(target[i],0) - 1);
+                }
+            }
+        }
+        int ans = 0;
+        for(Map.Entry<Integer,Integer> e: map.entrySet()) {
+            ans += Math.abs(e.getValue());
+        }
+        return ans/2;
+
+    }
+    public int minimumHammingDistance(int[] source, int[] target, int[][] allowedSwaps) {
+        List<List<Integer>> list = new ArrayList<>();
+
+        int n = source.length;
+        for(int i =0; i < n; i++) {
+            list.add(new ArrayList<>());
+        }
+
+        for(int[] i : allowedSwaps) {
+            list.get(i[0]).add(i[1]);
+            list.get(i[1]).add(i[0]);
+        }
+
+
+        boolean[] vis = new boolean[n];
+        int ans = 0;
+        for(int i = 0; i < n; ++i) {
+            if(!vis[i]) {
+                ans += dfs(source,target,list,vis,i);
+            }
+        }
+
+        return ans;
+    }
+}
