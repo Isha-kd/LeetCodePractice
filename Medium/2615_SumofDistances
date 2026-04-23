@@ -1,0 +1,39 @@
+class Solution {
+    class Pair {
+        int f;
+        long sum;
+
+        Pair(int freq, long s) {
+            f = freq;
+            sum = s;
+        }
+    }
+
+    public long[] distance(int[] nums) {
+        Map<Integer, Pair> prefix = new HashMap<>();
+        Map<Integer, Pair> suffix = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Pair p = suffix.getOrDefault(nums[i], new Pair(0, 0));
+            p.f ++;
+            p.sum += i;
+            suffix.put(nums[i], p);
+        }
+
+        long[] arr = new long[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            Pair p = suffix.get(nums[i]);
+            p.f --;
+            p.sum -= i;
+
+            Pair pre = prefix.getOrDefault(nums[i], new Pair(0,0));
+            arr[i] += p.sum - 1l * p.f * i + 1l * pre.f * i - pre.sum;
+            pre.sum += i;
+            pre.f ++;
+            suffix.put(nums[i], p);
+            prefix.put(nums[i], pre);
+        }
+
+        return arr;
+    }
+}
