@@ -1,0 +1,69 @@
+class Solution {
+    int n, m;
+
+    boolean helper(int[][] grid, int i,int j, boolean[][] vis) {
+
+        if(i == m - 1 && j == n - 1)
+            return true;
+
+        if(i >= m || i < 0 || j < 0 || j >= n)
+            return false;
+
+        vis[i][j] = true;
+
+
+        if(grid[i][j] == 1) {
+            if(j + 1 < n && (grid[i][j + 1] == 1
+                    || grid[i][j + 1] == 3
+                    || grid[i][j + 1] == 5) && !vis[i][j + 1] && helper(grid, i, j + 1, vis))
+                return true;
+            if(j > 0 &&  !vis[i][j-1] && (grid[i][j - 1] == 1
+                    || grid[i][j - 1] == 4 || grid[i][j - 1] == 6) && helper(grid, i, j - 1, vis))
+                return true;
+        } else if(grid[i][j] == 2) {
+            if(i + 1 < m && !vis[i + 1][j]
+                    && (grid[i + 1][j] == 2 || grid[i + 1][j] == 6 || grid[i + 1][j] == 5) && helper(grid, i + 1, j, vis))
+                return true;
+            if(i > 0 && !vis[i - 1][j]
+                    && (grid[i - 1][j] == 2 || grid[i - 1][j] == 4 || grid[i - 1][j] == 3) && helper(grid, i - 1, j, vis))
+                return true;
+        } else if(grid[i][j] == 3) {
+            if(i + 1 < m && !vis[i + 1][j]
+                    && (grid[i + 1][j] == 2 || grid[i + 1][j] == 6 || grid[i + 1][j] == 5) && helper(grid, i + 1, j, vis))
+                return true;
+            if(j > 0 &&  !vis[i][j-1] && (grid[i][j - 1] == 1
+                    || grid[i][j - 1] == 4 || grid[i][j - 1] == 6) && helper(grid, i, j - 1, vis))
+                return true;
+        } else if(grid[i][j] == 4) {
+            if(i + 1 < m && !vis[i + 1][j]
+                    && (grid[i + 1][j] == 2 || grid[i + 1][j] == 6 || grid[i + 1][j] == 5) && helper(grid, i + 1, j, vis))
+                return true;
+            if(j + 1 < n && (grid[i][j + 1] == 1
+                    || grid[i][j + 1] == 3
+                    || grid[i][j + 1] == 5) && !vis[i][j + 1] && helper(grid, i, j + 1, vis))
+                return true;
+        } else if(grid[i][j] == 5) {
+            if(i > 0 && !vis[i - 1][j]
+                    && (grid[i - 1][j] == 2 || grid[i - 1][j] == 4 || grid[i - 1][j] == 3) && helper(grid, i - 1, j, vis))
+                return true;
+            if(j > 0 && !vis[i][j-1] && (grid[i][j - 1] == 1
+                    || grid[i][j - 1] == 4 || grid[i][j - 1] == 6) && helper(grid, i, j - 1, vis))
+                return true;
+        } else {
+            if(i > 0 && !vis[i - 1][j]
+                    && (grid[i - 1][j] == 2 || grid[i - 1][j] == 4 || grid[i - 1][j] == 3) && helper(grid, i - 1, j, vis))
+                return true;
+            if(j + 1 < n && (grid[i][j + 1] == 1
+                    || grid[i][j + 1] == 3
+                    || grid[i][j + 1] == 5) && !vis[i][j + 1] && helper(grid, i, j + 1, vis))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasValidPath(int[][] grid) {
+        n = grid[0].length;
+        m = grid.length;
+        return helper(grid, 0, 0, new boolean[m][n]);
+    }
+}
