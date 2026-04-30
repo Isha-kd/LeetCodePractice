@@ -1,0 +1,29 @@
+class Solution {
+
+    int solve(int[][] grid, int i, int j, int[][][] dp, int cost) {
+        if(i>= grid.length || j >= grid[0].length) return -1;
+        if(cost >= dp[0][0].length) return -1;
+        if(dp[i][j][cost] != -2) return dp[i][j][cost];
+        int c = 0;
+        if(grid[i][j] != 0) c = 1;
+        if(i == grid.length-1 && j == grid[0].length - 1 && cost + c < dp[0][0].length) return grid[i][j];
+        int left = solve(grid,i, j + 1, dp, cost + c);
+        int down = solve(grid, i+1, j, dp, cost + c);
+        if(left == -1 && down == -1) return dp[i][j][cost]= -1;
+        if(left == -1) return dp[i][j][cost] = down+grid[i][j];
+        if(down == -1) return dp[i][j][cost] = left+grid[i][j];
+        return dp[i][j][cost] = Math.max(left,down) + grid[i][j];
+
+    }
+    public int maxPathScore(int[][] grid, int k) {
+        int m = grid.length, n = grid[0].length;
+        int[][][] dp = new int[m][n][k+1];
+        for(int[][] i : dp) {
+            for(int[] j : i) {
+                Arrays.fill(j, -2);
+            }
+        }
+
+        return solve(grid,0,0,dp, 0);
+    }
+}
