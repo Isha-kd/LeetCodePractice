@@ -1,0 +1,69 @@
+class Solution {
+    static int[] arr = new int[1000001];
+    static boolean flag = false;
+    static void seive() {
+        if(flag) return;
+        flag = true;
+        for(int i = 2; i < 1000001; i++) {
+            if(arr[i] == 0) {
+                arr[i] = 1;
+                for(long j = 1l * i * i; j < 1000001; j += i) {
+                    arr[(int)j] = -1;
+                }
+            }
+        }
+    }
+    public int minJumps(int[] nums) {
+        seive();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int n = nums.length, max = 0;
+        for(int i = 0; i < n; i++) {
+            List<Integer> list = map.getOrDefault(nums[i], new ArrayList<>());
+            list.add(i);
+            map.put(nums[i], list);
+            max = Math.max(nums[i], max);
+        }
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, n);
+        dist[0] = 0;
+        PriorityQueue<Integer> q = new PriorityQueue<>((a,b)-> {
+            if(dist[a] == dist[b]) return Integer.compare(b,a);
+            return Integer.compare(dist[a], dist[b]);
+        });
+        q.offer(0);
+        while(!q.isEmpty()) {
+            int ind = q.poll();
+            if(ind > 0) {
+                if(dist[ind-1] > dist[ind] + 1) {
+                    dist[ind-1] = dist[ind] + 1;
+                    q.offer(ind - 1);
+                }
+            }
+            if(ind < n - 1) {
+                if(dist[ind+1] > dist[ind] + 1) {
+                    dist[ind+1] = dist[ind] + 1;
+                    q.offer(ind + 1);
+                    if(ind == n - 2) return dist[ind + 1];
+                }
+            }
+            else return dist[ind];
+            int num = nums[ind];
+            if(arr[num] == 1) {
+                for(int i = num; i <= max; i += num) {
+                    if(map.containsKey(i)) {
+                        for(int j : map.get(i)) {
+                            if(dist[j] > dist[ind] + 1) {
+                                dist[j] = dist[ind] + 1;
+                                if(j == n - 1) return dist[j];
+                                q.offer(j);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return dist[n-1];
+    }
+}
