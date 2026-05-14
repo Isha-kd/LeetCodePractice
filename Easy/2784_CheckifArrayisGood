@@ -1,0 +1,13 @@
+class Solution {
+    public boolean isGood(int[] nums) {
+        int n = nums.length;
+        int[] arr = new int[n];
+        for(int i : nums) {
+            if(i >= n) return false;
+            arr[i] ++;
+            if(i != n-1 && arr[i] == 2) return false;
+            if(i == n - 1 && arr[i] > 2) return false;
+        }
+        return true;
+    }
+}
