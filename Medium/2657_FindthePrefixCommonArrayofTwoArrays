@@ -1,0 +1,16 @@
+class Solution {
+    public int[] findThePrefixCommonArray(int[] A, int[] B) {
+        int n = A.length;
+        int[] ans = new int[n];
+        int[] arr = new int[n+1];
+        int c = 0;
+        for(int i = 0; i < n; i++) {
+            if(arr[A[i]] == 1) c++;
+            arr[A[i]] ++;
+            if(arr[B[i]] == 1) c++;
+            arr[B[i]] ++;
+            ans[i] = c;
+        }
+        return ans;
+    }
+}
