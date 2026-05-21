@@ -1,0 +1,35 @@
+class Solution {
+    public int longestCommonPrefix(int[] arr1, int[] arr2) {
+        int n = arr1.length;
+        String[] arr = new String[n];
+        for(int i = 0; i < n; i ++) {
+            arr[i] = Integer.toString(arr1[i]);
+        }
+        Arrays.sort(arr);
+        int n2 = arr2.length;
+        String[] str = new String[n2];
+        for(int i = 0; i < n2; i ++) {
+            str[i] = Integer.toString(arr2[i]);
+        }
+        Arrays.sort(str);
+        int i = 0, j = 0;
+        int ans = 0;
+        while(i < n && j < n2) {
+            String s = arr[i], t = str[j];
+            int l = Math.min(s.length(), t.length());
+            int a = 0;
+            while(a < l && s.charAt(a) == t.charAt(a)) a++;
+            ans = Math.max(a, ans);
+            if(s.equals(t)) {
+                i ++;
+                j ++;
+            } else if(s.compareTo(t) <= 0) {
+                i++;
+            } else {
+                j ++;
+            }
+        }
+        return ans;
+
+    }
+}
