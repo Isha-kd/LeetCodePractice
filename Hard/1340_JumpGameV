@@ -1,0 +1,30 @@
+class Solution {
+    int[] dp;
+    int helper(int[] arr, int d, int ind) {
+        if(ind < 0 || ind >= arr.length) return 0;
+        if(dp[ind] != 0) return dp[ind];
+        int ans = 0;
+        for(int i = 1; i <= d; i ++) {
+            if(ind + i == arr.length || arr[i + ind] >= arr[ind]) break;
+            ans = Math.max(ans, helper(arr, d, ind + i));
+        }
+        for(int i = 1; i <= d; i ++) {
+            if(ind - i == -1 || arr[ind - i] >= arr[ind]) break;
+            ans = Math.max(ans, helper(arr, d, ind - i));
+        }
+
+        return dp[ind] = 1 + ans;
+    }
+    public int maxJumps(int[] arr, int d) {
+        int n = arr.length;
+        dp = new int[n];
+        int max = 0;
+        for(int i =0; i < n; i++) {
+            if(dp[i] == 0) {
+                max = Math.max(helper(arr, d, i), max);
+            }
+        }
+        return max;
+
+    }
+}
