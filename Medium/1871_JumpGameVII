@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canReach(String s, int minJump, int maxJump) {
+        int l = s.length();
+        int[] arr = new int[l + 1];
+        arr[minJump] = 1;
+        arr[maxJump + 1] = -1;
+        int i = 1;
+        while(i < l) {
+            arr[i] += arr[i - 1];
+            if(arr[i] == 0 || s.charAt(i) == '1') {
+                i++;
+                continue;
+            }
+            if(i == l - 1) return true;
+            if(i + minJump < l) arr[i +  minJump] += 1;
+            if(i + maxJump < l) arr[i + maxJump + 1] -= 1;
+            i++;
+
+        }
+        return false;
+
+    }
+}
