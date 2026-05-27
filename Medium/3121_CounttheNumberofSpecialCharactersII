@@ -1,0 +1,19 @@
+class Solution {
+    public int numberOfSpecialChars(String word) {
+        int l = word.length();
+        int[] arr = new int[26];
+        int[] up = new int[26];
+        Arrays.fill(arr, l);
+        Arrays.fill(up, -1);
+        for(int i = 0; i < l; i ++) {
+            char ch = word.charAt(i);
+            if(ch >= 'a') arr[ch-'a'] = i;
+            else if(up[ch-'A'] == -1) up[ch-'A'] = i;
+        }
+        int ans = 0;
+        for(int i = 0; i < 26; i++) {
+            if(arr[i] < up[i]) ans ++;
+        }
+        return ans;
+    }
+}
