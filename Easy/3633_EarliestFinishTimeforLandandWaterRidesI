@@ -1,0 +1,34 @@
+class Solution {
+    public int earliestFinishTime(int[] l, int[] ld, int[] w, int[] wd) {
+        int min1=0,min2=0,lmin=l[0]+ld[0],wmin=w[0]+wd[0];
+        for(int i=0;i<l.length;i++)
+        {
+            if(l[i]+ld[i]<lmin)
+            {
+                min1=i;
+                lmin=l[i]+ld[i];
+            }
+        }
+        for(int i=0;i<w.length;i++)
+        {
+            if(w[i]+wd[i]<wmin)
+            {
+                min2=i;
+                wmin=w[i]+wd[i];
+            }
+        }
+        int land=lmin,minend=Integer.MAX_VALUE;
+        for(int i=0;i<w.length;i++)
+        {
+            if(w[i]<=land)minend=Math.min(minend,land+wd[i]);
+            else minend=Math.min(minend,w[i]+wd[i]);
+        }
+        int water=wmin;
+        for(int i=0;i<l.length;i++)
+        {
+            if(l[i]<=water)minend=Math.min(minend,water+ld[i]);
+            else  minend=Math.min(minend,l[i]+ld[i]);
+        }
+        return minend;
+    }
+}
