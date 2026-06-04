@@ -1,0 +1,26 @@
+class Solution {
+    static int[] arr = new int[100001];
+    static boolean flag = false;
+    static void find() {
+        if(flag) return;
+        flag = true;
+        for(int i = 101; i < 100001; i ++) {
+            int one = i % 10;
+            int two = (i % 100) / 10;
+            int three = (i % 1000) / 100;
+            if(one > two && three > two)
+                arr[i] ++;
+            if(one < two && three < two)
+                arr[i] ++;
+            arr[i] += arr[i / 10];
+        }
+        for(int i = 101; i < 100001; i ++) {
+            arr[i] += arr[i - 1];
+        }
+
+    }
+    public int totalWaviness(int num1, int num2) {
+        find();
+        return arr[num2] - arr[num1 - 1];
+    }
+}
