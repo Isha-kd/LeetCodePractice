@@ -1,0 +1,24 @@
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) {
+        int n=nums.length;
+        int[] ans=new int[n];
+        int s=0,g=n-1;
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]<pivot)
+            {
+                ans[s++]=nums[i];
+            }
+            if(nums[n-i-1]>pivot)
+            {
+                ans[g--]=nums[n-i-1];
+            }
+        }
+        while(s<=g)
+        {
+            ans[s++]=pivot;
+            ans[g--]=pivot;
+        }
+        return ans;
+    }
+}
