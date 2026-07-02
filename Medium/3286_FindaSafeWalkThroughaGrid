@@ -1,0 +1,40 @@
+class Solution {
+    class Node {
+        int x, y;
+        Node(int a, int b) {
+            x = a;
+            y = b;
+        }
+    }
+    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
+        int m = grid.size();
+        int n = grid.get(0).size();
+        int[][] vis = new int[m][n];
+        for(int[] i : vis) {
+            Arrays.fill(i, 100000);
+        }
+        int[] row = {0, 1, 0, -1};
+        int[] col = {1, 0, -1, 0};
+
+        PriorityQueue<Node> q = new PriorityQueue<>((a,b) -> (vis[a.x][a.y] - vis[b.x][b.y]));
+        q.offer(new Node(0, 0));
+        vis[0][0] = grid.get(0).get(0);
+        while(!q.isEmpty()){
+            Node node = q.poll();
+            for(int i = 0; i < 4; i ++) {
+                int x = node.x + row[i];
+                int y = node.y + col[i];
+                if(x < 0 || y < 0 || x >= m || y >= n) continue;
+                int c = vis[node.x][node.y] + grid.get(x).get(y);
+                if(vis[x][y] <= c) continue;
+                if(x == m - 1 && y == n - 1 && c >= health) return false;
+                if(c >= health) continue;
+                if(x == m - 1 && y == n - 1) return true;
+                vis[x][y] = c;
+                q.offer(new Node(x, y));
+
+            }
+        }
+        return false;
+    }
+}
