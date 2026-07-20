@@ -1,0 +1,22 @@
+class Solution {
+    public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+        int m = grid.length, n = grid[0].length;
+        k %= m*n;
+        List<List<Integer>> list = new ArrayList<>();
+        for(int i = 0; i < m; i ++) {
+            List<Integer> l = new ArrayList<>();
+            for(int j = 0; j < n; j ++)
+                l.add(0);
+            list.add(l);
+        }
+        for(int i = 0; i < m; i ++) {
+            for(int j = 0; j < n; j ++) {
+                int c = i * n + j;
+                c += k;
+                list.get((c/n) % m).set(c % n, grid[i][j]);
+            }
+        }
+        return list;
+
+    }
+}
