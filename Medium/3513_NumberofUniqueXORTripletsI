@@ -1,0 +1,8 @@
+class Solution {
+    public int uniqueXorTriplets(int[] nums) {
+        int n = nums.length;
+        if(n < 3) return n;
+        if(n == 3) return 4;
+        return 1 << (int)(Math.log(n)/Math.log(2)) + 1;
+    }
+}
