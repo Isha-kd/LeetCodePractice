@@ -1,0 +1,25 @@
+class Solution {
+    int[][] dp;
+    int helper(int[] nums, int start, int end) {
+        if(start > end)
+            return 0;
+
+        if(dp[start][end] != -1)
+            return dp[start][end];
+
+        if(start == end)
+            return dp[start][end] = nums[start];
+
+        int left = nums[start] - helper(nums, start + 1, end);
+        int right = nums[end] - helper(nums, start, end - 1);
+        return dp[start][end] = Math.max(left, right);
+    }
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length;
+        dp = new int[n][n];
+        for(int[] i : dp) {
+           Arrays.fill(i , -1);
+        }
+        return helper(nums, 0, n-1) >= 0;
+    }
+}
