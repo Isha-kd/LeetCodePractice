@@ -1,0 +1,27 @@
+class Solution {
+    int[] dp;
+    int solve(int[] nums, int ind) {
+        int n = nums.length;
+        if(ind >= n)
+            return 0;
+        if(dp[ind] != -1)
+            return dp[ind];
+        int one = -10000000, two = one, three = one;
+        if(n - ind >= 1)
+            one = nums[ind] - solve(nums, ind + 1);
+        if(n - ind > 1)
+            two = nums[ind] + nums[ind + 1] - solve(nums, ind + 2);
+        if(n - ind > 2)
+            three = nums[ind] + nums[ind + 1] + nums[ind + 2] - solve(nums, ind + 3);
+        return dp[ind] = Math.max(Math.max(one, two), three);
+
+    }
+    public String stoneGameIII(int[] stoneValue) {
+        dp = new int[stoneValue.length];
+        Arrays.fill(dp, -1);
+        int ans = solve(stoneValue, 0);
+        if(ans < 0) return "Bob";
+        else if(ans > 0) return "Alice";
+        else return "Tie";
+    }
+}
