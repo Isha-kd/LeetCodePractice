@@ -1,0 +1,20 @@
+class Solution {
+    public List<Integer> findMissingElements(int[] nums) {
+        int[] arr = new int [101];
+        for(int i : nums)
+            arr[i] ++;
+        int i = 0, j = 100;
+        while(arr[i] == 0)
+            i ++;
+        while(arr[j] == 0)
+            j --;
+        List<Integer> list = new ArrayList<>();
+        while(i < j) {
+            if(arr[i] == 0)
+                list.add(i);
+            i ++;
+        }
+        return list;
+
+    }
+}
