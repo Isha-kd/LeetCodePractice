@@ -1,0 +1,55 @@
+class Solution {
+
+    boolean dfs(int n , int k, int[] vis, List<List<Integer>> list) {
+
+        for(int i : list.get(k)) {
+            if(vis[i] != 0 && vis[i] != vis[k]) {
+                return false;
+            }
+            if(vis[i] == 0) {
+                vis[i] = vis[k];
+                if(!dfs(n, i, vis, list)) return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Integer> remainingMethods(int n, int k, int[][] invocations) {
+
+        List<List<Integer>> list = new ArrayList<>();
+
+        for(int i = 0; i < n; i ++)
+            list.add(new ArrayList<>());
+
+        for(int[] i : invocations)
+            list.get(i[0]).add(i[1]);
+
+        int[] vis = new int[n];
+
+        vis[k] = 2;
+        dfs(n, k, vis, list);
+
+        boolean flag = false;
+        for(int i = 0; i < n; i ++) {
+            if(vis[i] == 0) {
+                vis[i] = 1;
+                if(!dfs(n, i, vis, list)) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+
+        List<Integer> ans = new ArrayList<>();
+        if(flag) {
+            for(int i = 0; i < n; i ++)
+                ans.add(i);
+        } else {
+            for(int i = 0; i < n; i ++) {
+                if(vis[i] != 2)
+                    ans.add(i);
+            }
+        }
+        return ans;
+    }
+}
