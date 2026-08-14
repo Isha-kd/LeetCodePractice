@@ -1,0 +1,22 @@
+class Solution {
+    public int maximumLengthSubstring(String s) {
+        int[] freq = new int[26];
+        int max = 0, l = s.length(), i = 0, j = 0;
+        while(i < l && j < l) {
+            while(j < l) {
+                freq[s.charAt(j)-'a'] ++;
+                if(freq[s.charAt(j)-'a'] > 2)
+                    break;
+                max = Math.max(max, j - i + 1);
+                j ++;
+
+            }
+            j ++;
+            while(j < l && freq[s.charAt(j - 1)-'a'] > 2) {
+                freq[s.charAt(i)-'a'] --;
+                i ++;
+            }
+        }
+        return max;
+    }
+}
