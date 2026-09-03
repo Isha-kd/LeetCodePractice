@@ -1,0 +1,13 @@
+class Solution {
+    public boolean uniformArray(int[] nums1) {
+        int even = Integer.MAX_VALUE, odd = even;
+        for(int i : nums1) {
+            if((i & 1) == 0)
+                even = Math.min(even, i);
+            else
+                odd = Math.min(odd, i);
+        }
+        if(even == Integer.MAX_VALUE || odd == Integer.MAX_VALUE) return true;
+        return even - odd >= 1;
+    }
+}
