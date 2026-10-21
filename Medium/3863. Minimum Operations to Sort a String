@@ -1,0 +1,34 @@
+class Solution {
+
+    boolean isSorted(String s) {
+        int l = s.length();
+        for(int i = 0; i < l - 1; i ++) {
+            if(s.charAt(i) > s.charAt(i + 1))
+                return false;
+        }
+        return true;
+
+    }
+    public int minOperations(String s) {
+
+        if(s.length() == 2 && s.charAt(1) < s.charAt(0))
+            return -1;
+
+        if(isSorted(s))
+            return 0;
+
+        int min = 0, l = s.length(), max = l - 1;
+
+        for(int i = 0; i < l; i ++) {
+            if( s.charAt(i) >= s.charAt(max))
+                max = i;
+            if(s.charAt(i) < s.charAt(min))
+                min = i;
+        }
+        if(min == 0 || max == l - 1)
+            return 1;
+        if(min == l - 1 && max == 0)
+            return 3;
+        return 2;
+    }
+}
