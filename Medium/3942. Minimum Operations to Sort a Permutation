@@ -1,0 +1,25 @@
+class Solution {
+    public int minOperations(int[] nums) {
+        int asc = 0, desc = 0;
+        int n = nums.length;
+        if(nums[0] < nums[n-1]) asc ++;
+        else desc ++;
+        for(int i = 1; i < n; i ++) {
+            if(nums[i] < nums[i - 1]) asc ++;
+            else desc ++;
+        }
+        if(asc > 1 && desc > 1) return -1;
+        int ind = -1;
+        for(int i = 0 ; i < n; i++) {
+            if(nums[i] == 0) {
+                ind = i;
+                break;
+            }
+        }
+        if(asc <= 1) {
+            return Math.min(ind, n - ind + 2);
+        } else {
+            return 1 + Math.min(n - 1 - ind , ind + 1);
+        }
+    }
+}
