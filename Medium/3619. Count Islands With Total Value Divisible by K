@@ -1,0 +1,38 @@
+class Solution {
+
+    int[] row = {0, 1, 0 , -1};
+    int[] col = {1, 0, -1, 0};
+
+    long dfs(int[][] grid, boolean[][] vis, int i, int j) {
+        vis[i][j] = true;
+
+        long v = grid[i][j];
+
+        for(int x = 0; x < 4; x ++) {
+            int r = i + row[x];
+            int c = j + col[x];
+            if(r < grid.length && r >= 0 && c < grid[0].length && c >= 0 && grid[r][c] != 0 && !vis[r][c]) {
+                v += dfs(grid, vis, r, c);
+            }
+        }
+
+        return v;
+
+    }
+    public int countIslands(int[][] grid, int k) {
+        int n = grid.length, m = grid[0].length;
+        boolean[][] vis = new boolean[n][m];
+        int ans = 0;
+        for(int i = 0; i < n; i ++) {
+            for(int j = 0; j < m; j ++) {
+                if(grid[i][j] != 0 && !vis[i][j]) {
+                    long val = dfs(grid, vis, i, j);
+                    if(val % k == 0)
+                        ans ++;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
