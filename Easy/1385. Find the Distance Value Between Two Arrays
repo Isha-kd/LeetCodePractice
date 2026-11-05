@@ -1,0 +1,22 @@
+class Solution {
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        int m = arr2.length;
+        int j = 0, n = arr1.length - 1, k = 0;
+        int ans = 0;
+        for(int i : arr1) {
+            while(k < m && arr2[k] < i)
+                k ++;
+            while(j < m - 1 && arr2[j + 1] <= i) {
+                j ++;
+            }
+            if(Math.abs(i - arr2[j]) > d) {
+                if(k == m || arr2[k] - i > d)
+                    ans ++;
+            }
+
+        }
+        return ans;
+    }
+}
