@@ -1,0 +1,58 @@
+class Solution {
+    public int maxSelectedElements(int[] nums) {
+        int max = 0;
+
+        for(int i : nums)
+            max = Math.max(i, max);
+
+        int[] arr = new int[max + 2];
+        for(int i : nums)
+            arr[i] ++;
+
+        int prev = 0;
+        int[] arr2 = new int[max + 2];
+        for(int i = 0; i <= max + 1; i ++) {
+            if(prev < 1) {
+                arr2[i] = arr[i];
+                prev = arr[i] - 1;
+            } else {
+                int x = arr[i];
+                arr2[i] = 1;
+                prev = x;
+            }
+        }
+        int ans = 0;
+        int next = 0;
+        int c = 0;
+        int x = 0;
+        boolean flag = false;
+        for(int i = max + 1; i >= 0; i --) {
+            if(arr2[i] > 0) {
+                if(arr[i] < 1)
+                    flag = true;
+                c ++;
+                if(!flag)
+                    x ++;
+            } else {
+                if(flag) {
+                    ans = Math.max(ans, c);
+                    ans = Math.max(ans, x + next);
+                }
+
+                else
+                    ans = Math.max(ans, c + next);
+                next = c;
+                c = 0;
+                x = 0;
+                flag = false;
+            }
+
+        }
+        if(flag)
+            ans = Math.max(ans, c);
+        else
+            ans = Math.max(ans, c + next);
+        return ans;
+
+    }
+}
