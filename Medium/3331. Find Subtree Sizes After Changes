@@ -1,0 +1,51 @@
+class Solution {
+    int[] ans;
+    int[] arr;
+
+    List<List<Integer>> list;
+
+    void solve(int[] parent, String s, int curr) {
+        int x = arr[s.charAt(curr) - 'a'];
+        arr[s.charAt(curr) - 'a'] = curr;
+
+        for(int i : list.get(curr))
+            solve(parent, s, i);
+
+        arr[s.charAt(curr) - 'a'] = x;
+
+        if(curr == 0) {
+            ans[0] = s.length();
+            return;
+        }
+
+
+        if(x == -1) {
+            ans[parent[curr]] += ans[curr];
+        } else {
+            ans[x] += ans[curr];
+        }
+
+    }
+    public int[] findSubtreeSizes(int[] parent, String s) {
+        int n = s.length();
+
+        arr = new int[26];
+        Arrays.fill(arr, -1);
+
+        ans = new int[n];
+        Arrays.fill(ans, 1);
+
+        list = new ArrayList<>();
+
+        for(int i = 0; i < n; i ++)
+            list.add(new ArrayList<>());
+
+        for(int i = 1; i < n; i ++) {
+            list.get(parent[i]).add(i);
+        }
+
+        solve(parent, s, 0);
+
+        return ans;
+    }
+}
