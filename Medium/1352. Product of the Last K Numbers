@@ -1,0 +1,38 @@
+class ProductOfNumbers {
+
+    long product;
+    List<Long> list;
+    int zero;
+
+    public ProductOfNumbers() {
+        product = 1;
+        list = new ArrayList<>();
+        zero = 1;
+    }
+
+    public void add(int num) {
+        if(num == 0) {
+            zero = 1;
+            list = new ArrayList<>();
+            product = 1;
+        } else {
+            zero ++;
+            product *= num;
+            list.add(product);
+        }
+    }
+
+    public int getProduct(int k) {
+        if(zero > k)
+            return (int)(list.get(list.size() - 1) / (list.size() == k ? 1 : list.get(list.size() - 1 - k)));
+        else
+            return 0;
+    }
+}
+
+/**
+ * Your ProductOfNumbers object will be instantiated and called as such:
+ * ProductOfNumbers obj = new ProductOfNumbers();
+ * obj.add(num);
+ * int param_2 = obj.getProduct(k);
+ */
