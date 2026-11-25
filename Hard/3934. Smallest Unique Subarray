@@ -1,0 +1,52 @@
+class Solution {
+    static long mod = 1_000_000_007l;
+    static long base = 31l;
+
+    boolean possible(int[] nums, int k) {
+        Map<Long, Integer> map = new HashMap<>();
+
+        long hash = 0, power = 1;
+
+        for(int i = 1; i < k; i ++) {
+            power *= base;
+            power %= mod;
+        }
+
+        for(int i = 0; i < k; i ++) {
+            hash = (hash * base + nums[i]) % mod;
+
+        }
+
+        map.put(hash, 1);
+        int n = nums.length;
+
+        for(int i = 1; i < n - k + 1; i ++) {
+            int x = nums[i - 1];
+
+            hash = ((hash - x * power) % mod + mod) % mod;
+            hash = (hash * base + nums[i + k - 1]) % mod;
+
+            map.put(hash, map.getOrDefault(hash, 0) + 1);
+        }
+        for(Integer v : map.values())
+            if(v == 1)
+                return true;
+        return false;
+    }
+
+    public int smallestUniqueSubarray(int[] nums) {
+        int n = nums.length;
+        int ans = n;
+        int low = 1, high = n - 1;
+        while(low <= high) {
+            int mid = low + (high-low)/2;
+            if(possible(nums,mid)) {
+                high = mid - 1;
+                ans = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+}
